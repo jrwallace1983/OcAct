@@ -94,14 +94,16 @@ nav{ background:linear-gradient(180deg,#EAE2D7,#5F5F5F);
 			text-align:center;
 			padding-top:2%;
 			font-size: 30px;
-			color:black;
+			color:white;
 			font-family:Helvetica;
+			text-shadow:2px 2px black;
 }
 #showcase p{background-color:;
 		position:relative;
 		text-align:center;
 		font-size:20px;
-		color:black;
+		color:white;
 		font-weight:bold;
 		opacity:;
+		text-shadow:2px 2px black;
 }
