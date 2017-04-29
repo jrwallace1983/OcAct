@@ -63,5 +63,9 @@ nav{background:linear-gradient(180deg,#EAE2D7,#5F5F5F); position:absolute; botto
 		opacity:;
 		text-shadow:2px 2px black;
 }
+#subscribe{background-color:#76101E;
+		position:relative;
+		height: 160px;
+}
 footer .container{background-color:blue;padding:15px 0 15px 0;}
 footer .container div h6{color:white; padding:0px 0px 0px 2%; margin:0px}
