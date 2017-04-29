@@ -3,7 +3,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
-    <title>Simple Map</title>
+    <title>esri API</title>
+	<link rel="icon" href="./image/globe.png">
 	<link rel="stylesheet" href="https://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
     <style>
@@ -11,6 +12,7 @@
         height: 100%;
         margin: 0;
         padding: 0;
+		
       }
 	  #LocateButton{
 		position: absolute;
@@ -37,17 +39,26 @@
     <script>
       var map;
 
-      require(["esri/map","esri/dijit/LocateButton","esri/dijit/Search","esri/layers/FeatureLayer","esri/dijit/Legend",
-      "dojo/_base/array", "esri/dijit/BasemapGallery", "esri/arcgis/utils",
+      require(["esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search","esri/layers/FeatureLayer","esri/dijit/Legend",
+      "dojo/_base/array", "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/geometry/webMercatorUtils", "dojo/dom",
       "dojo/parser", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane","dijit/layout/AccordionContainer",
-      "dojo/domReady!"], function(Map, LocateButton,
-	  Search, FeatureLayer, Legend, arrayUtils, BasemapGallery, arcgisUtils, parser) {
+	  "dojo/domReady!"], function(Map, Scalebar, LocateButton,
+	  Search, FeatureLayer, Legend, arrayUtils, BasemapGallery, arcgisUtils,webMercatorUtils, dom, parser) {
 		parser.parse();
         var map = new Map("map", {
           basemap: "streets",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
-          center: [-82.44109, 35.6122], // longitude, latitude
+          center: [-117.87, 33.782], // longitude, latitude
           zoom: 13
         });
+		
+		  var scalebar = new Scalebar({
+          map: map,
+          // "dual" displays both miles and kilometers
+          // "english" is the default, which displays miles
+          // use "metric" for kilometers
+          scalebarUnit: "dual"
+        });
+		
 		var geoLocate = new LocateButton({
 		map: map
 		}, "LocateButton");
@@ -81,6 +92,18 @@
           legendDijit.startup();
 		}
 		});
+		  map.on("load", function() {
+          //after map loads, connect to listen to mouse move & drag events
+          map.on("mouse-move", showCoordinates);
+          map.on("mouse-drag", showCoordinates);
+        });
+
+        function showCoordinates(evt) {
+          //the map is in web mercator but display coordinates in geographic (lat, long)
+          var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
+          //display mouse coordinates
+          dom.byId("info").innerHTML = mp.x.toFixed(3) + ", " + mp.y.toFixed(3);
+        }
 		geoLocate.startup();
         search.startup();
 		basemapGallery.startup();
@@ -106,13 +129,13 @@
       </div>
       <div data-dojo-type="dijit/layout/ContentPane"
            data-dojo-props="title:'Pane 2'">
-        This pane could contain tools or additional content
+        <!--This pane could contain tools or additional content-->
       </div>
     </div>
   </div>
     <div id="map" class="map" data-dojo-type="dijit/layout/ContentPane" 
          data-dojo-props="region:'center'">
-		 
+		 <span id="info" style="position:absolute; left:200px; bottom:5px; color:#000; z-index:50;"></span>
 		<div id="LocateButton">
 		</div>
 		<div id="search"></div>
