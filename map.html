@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -11,22 +11,50 @@
         margin: 0;
         padding: 0;
       }
+	  #LocateButton{
+		position: absolute;
+		top:95px;
+		left:20px;
+		z-index:50;
+	}
+	#search {
+         display: block;
+         position: absolute;
+         z-index: 2;
+         top: 20px;
+         left: 74px;
+	}
     </style>
     <script src="https://js.arcgis.com/3.20/"></script>
     <script>
       var map;
 
-      require(["esri/map", "dojo/domReady!"], function(Map) {
-        map = new Map("map", {
-          basemap: "topo",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
-          center: [-122.45, 37.75], // longitude, latitude
+      require(["esri/map","esri/dijit/LocateButton","esri/dijit/Search","esri/layers/FeatureLayer","dojo/domReady!"], function(MyMap, LocateButton, Search, FeatureLayer) {
+        var map = new MyMap("map", {
+          basemap: "streets",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+          center: [-82.44109, 35.6122], // longitude, latitude
           zoom: 13
         });
+		var geoLocate = new LocateButton({
+		map: map
+		}, "LocateButton");
+		var search = new Search({
+        map: map
+        }, "search");
+		var featureLayer = new FeatureLayer("https://egis3.lacounty.gov/arcgis/rest/services/PARKS/TrailLines/MapServer/1");
+		geoLocate.startup();
+        search.startup();
+		map.addLayer(featureLayer);
       });
+	  
     </script>
   </head>
 
   <body>
-    <div id="map"></div>
+    <div id="map" class="map">
+		<div id="LocateButton">
+		</div>
+		<div id="search"></div>
+	</div>
   </body>
 </html>
