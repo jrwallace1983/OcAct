@@ -1,17 +1,44 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8"/>
-		<meta name="viewport" content="width=device-width"/>
-		<meta name="description" content="My First Website"/>
-		<meta name="keywords" content="My First Website"/>
-		<meta name="author" content="James Wallace"/>
-		<title>Outside Orange County</title>
-		<script></script>
-		<link rel="stylesheet" type="text/css" href="./css/style.css">
-		<link rel="icon" href="./image/orange-icon.png">
-	</head>
-	<body>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width"/>
+	<meta name="description" content="My First Website"/>
+	<meta name="keywords" content="My First Website"/>
+	<meta name="author" content="James Wallace"/>
+	<title>Outside Orange County</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"
+            data-dojo-config="async: true"></script>
+
+    <script>
+require([
+    'dojo/dom',
+    'dojo/fx',
+    'dojo/domReady!'
+], function (dom, fx) {
+    // The piece we had before...
+    var greeting = dom.byId('greeting');
+    greeting.innerHTML += ' from Dojo!';
+	
+	var mygreet = dom.byId('greet');
+	mygreet.innerHTML += ' from me!!';
+
+    // ...but now, with an animation!
+    fx.slideTo({
+        node: greeting,
+        top: 100,
+        left: 200
+		}).play();
+
+		fx.slideTo({
+        node: greet,
+        top: 400,
+        left: 200
+		}).play();
+});
+    </script>
+</head>
+<body>
 		<header>
 			<div class="container" style="background-color:pink;">
 				<div id="containerheadermain">
@@ -38,6 +65,8 @@
 				</div>
 				<hr/>
 			</div>
+			<h1 id="greeting">Hello</h1>
+			<h1 id="greet" style="color:blue;">MyGreet</h1>
 		</header>
 		<section id="showcase">
 			<div class="container">
@@ -69,5 +98,7 @@
 				</div>
 			</div>
 		</footer>
-	</body>
+    <!-- load Dojo -->
+    
+</body>
 </html>

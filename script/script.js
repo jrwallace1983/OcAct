@@ -96,3 +96,157 @@ rpsls("scissors")
 rpsls("rock")
 rpsls("lizard")
 rpsls("paper")
+document.write("hellow World\r")
+
+console.log(5==5);
+console.log(5=="5");
+console.log(5==="5");
+console.log(5 + 5 != 5 + "5");
+console.log(5 != "five");
+console.log(true != false);
+/*alert("Good Morning");
+confirm("continue");
+prompt("tell me something sexy", "...");
+var theNumber = Number(prompt("Pick a number", ".."));
+alert("Your Number is the square root of..." + theNumber * theNumber);
+if (!isNaN(theNumber)){
+	alert("Your Number is the square root of" + theNumber * theNumber);
+}
+else{
+	alert("Why didnt you give me a number")
+}
+var count = 0
+while(count <= 20){
+	count +=2;
+	console.log(count);
+
+}
+do{
+	count+=2;
+	console.log(count);
+}
+	while(count < 0)
+do{
+	alert("help!!");
+	var name = prompt("tell me something sexy", "...");
+}
+while (!name);
+console.log(name);*/
+for(var num = 0; num < 12; num = num + 2){
+	document.write(num);
+}
+for(var count = 20;; count++){
+	if(count % 7 == 1){
+		break;
+	}
+	document.write(count);
+}
+switch (prompt("What is the Weather?"," ")){
+	case "rainy":
+		console.log("Remember and Umbrella");
+		break;
+	case "sunny":
+		console.log("Remember Sunscreen");
+		break;
+	default:
+		console.log("Fuck who cares");
+		break;
+}
+var x = "outside"
+function myfunc(){
+	var x = "inside f1";
+	console.log(x);
+}
+function myfunc2(){
+	x = "inside f2"
+	console.log(x)
+}
+myfunc()
+console.log(x)
+myfunc2()
+console.log(x)
+var y = 5;
+function myfuncky5(a){
+	a = 20;
+	return a;
+}
+console.log(y);
+console.log(myfuncky5(y));
+console.log(y);
+
+var myList = ["item1", "item2", 4, 5, "myfunc()"]
+console.log(myList)
+console.log(myList[3])
+var z = myfunc()
+
+var myObject = {event1: ["make a list", 1, 3, 4,5,66], event2: "Attribute", script: function myscript(){myfunc()}}
+console.log(myObject.event2)
+console.log(myObject.event1[2])
+myObject.script()
+
+myList2 = ["item1", 3, "item2", 4]
+function listfunc(){
+	for(i = 0; i< myList2.length; i++){
+		alert("this is the list item" + myList2[i])
+	}
+}
+listfunc()
+var goleta = {
+ "currentVersion": 10.31,
+ "folders": [],
+ "services": [
+  {
+   "name": "Locator/2015CenterlinesSBC",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/DBO_Parcels_2016_APN",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/DBO_Parcels_2016_Owner",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_CompositeAddLocat",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_Hydrant_DataEase_ID",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_Map_Grid_NAME",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_Parcels_2015_APN",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_Parcels_2015_Owner",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_Project_WO2",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_ServiceConnection_PropNum",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_ServiceConnection_SerNUM",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_ServiceConnection_ServAdd",
+   "type": "GeocodeServer"
+  },
+  {
+   "name": "Locator/SDE_Valve_DataEASE_ID",
+   "type": "GeocodeServer"
+  }
+ ]
+}
+console.log(goleta.currentVersion)

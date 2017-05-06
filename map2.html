@@ -40,6 +40,7 @@
 	.esriScalebarLine{
 		background-color:white;
 	}
+
     </style>
     <script src="https://js.arcgis.com/3.20/"></script>
     <script>
@@ -54,7 +55,8 @@
         var map = new Map("map", {
           basemap: "streets",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
           center: [-117.87, 33.782], // longitude, latitude
-          zoom: 13
+          zoom: 13,
+		  logo: false
         });
 		
 		  var scalebar = new Scalebar({
@@ -134,7 +136,7 @@
         <div id="legendDiv"></div>
       </div>
       <div data-dojo-type="dijit/layout/ContentPane"
-           data-dojo-props="title:'Pane 2'">
+           data-dojo-props="title:'Pane 2'" >
         <!--This pane could contain tools or additional content-->
       </div>
     </div>

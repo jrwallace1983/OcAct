@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Simple Map</title>
+	<link rel="stylesheet" href="https://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+    <style>
+      html, body, #map {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://js.arcgis.com/3.20/"></script>
+    <script>
+      var map;
+
+      require(["esri/map", "esri/dijit/Scalebar", "esri/dijit/BasemapGallery","esri/arcgis/utils",
+      "dojo/parser","dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane", "dojo/domReady!"], function(Map, Scalebar, BasemapGallery, arcgisUtils, parser) {
+        parser.parse();
+		map = new Map("map", {
+          basemap: "topo",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+          center: [-122.45, 37.75], // longitude, latitude
+          zoom: 13
+        });
+		var scalebar = new Scalebar({map: map, attachTo:"bottom-left", scalebarStyle: "ruler"
+		});
+		basemapgallery = new BasemapGallery({
+			ShowArcgisBasemaps: true,
+			map: map
+		}, "basemapGallerydiv");
+		basemapgallery.startup();
+      });
+    </script>
+  </head>
+
+  <body class="claro">
+	<div data-dojo-type="dijit/layout/BorderContainer" 
+       data-dojo-props="design:'headline', gutters:false" 
+       style="width:100%;height:100%;margin:0;">
+    <div id="map">
+	<div style="position:absolute; right:20px; top:10px; z-Index:999;">
+	<div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'Switch Basemap', closable:false, open:false">
+	<div style="position:absolute; right:20px; top:10px; z-Index:999;">
+	<div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
+	<div id="basemapGallerydiv"></div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+  </body>
+</html>
