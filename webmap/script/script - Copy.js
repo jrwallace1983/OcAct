@@ -96,22 +96,6 @@
           dom.byId("queryinfo").innerHTML = resultItems.join("");
         }
 		
-		/*var sqlExpression = "TOTPOP_CY / (ALAND * 0.0000003861)";
-		// Object used to request the number of  
-		// block groups within one mile of the mouse click.
-		var countStatDef = new StatisticDefinition();
-		countStatDef.statisticType = "count";
-		countStatDef.onStatisticField = sqlExpression;
-		countStatDef.outStatisticFieldName = "numBlockGroups";
-		
-		 // Set the base parameters for the query. All statistic definition objects
-		// are passed as an array into the outStatistics param
-		var queryParams = new Query();
-		queryParams.distance = 1;  // Return all block groups within one mile of the point
-		queryParams.units = "miles";
-		queryParams.outFields = fields;
-		queryParams.outStatistics = [ countStatDef];*/
-		
 		//add the legend
 		map.on("layers-add-result", function (evt) {
         var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
