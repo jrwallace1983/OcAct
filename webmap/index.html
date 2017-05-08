@@ -38,6 +38,26 @@
 					<div id="queryinfo" style="padding:5px; margin:5px; background-color:#eee;">
 					</div>
 				</div>
+				<div data-dojo-type="dijit/layout/ContentPane" id="CountPane"
+					data-dojo-props="title:'Fire Hydrant Totals', selected:true">
+					Field for Query:
+					<input type="text" id="fcfield" value="field"></br>
+					Operator:</br>
+					<select id="operator">
+						<option value ="=">=</option>
+						<option value ="<>"><></option>
+						<option value ="LIKE">LIKE</option>
+						<option value ="NOT LIKE">NOT LIKE</option>
+						<option value ="IS">IS</option>
+					</select></br>
+					Value:</br>
+					<input type="text" id="facilityid2" value="value">
+					<input id="execute2" type="button" value="Get Details">
+					<br />
+					<br />
+					<div id="CityCount"style="padding:5px; margin:5px; background-color:#eee;"></div>
+					<hr>
+				</div>
 			</div>
 		</div>
 		<div id="map" class="map" data-dojo-type="dijit/layout/ContentPane" 
@@ -51,12 +71,6 @@
 					data-dojo-props="title:'Switch Basemap', closable:false, open:false">
 					<div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
 						<div id="basemapGallery"></div>
-					</div>
-				</div>
-			</div>
-			<div style="position:absolute; left 20px; top:10px; z-Index:999;">
-				<div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'New Pane', closable:false, open:false">
-					<div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
 					</div>
 				</div>
 			</div>

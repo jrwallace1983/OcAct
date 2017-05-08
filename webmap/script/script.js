@@ -1,9 +1,12 @@
       var map;
 
-      require(["esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search","esri/layers/ArcGISDynamicMapServiceLayer","esri/layers/FeatureLayer","esri/InfoTemplate","esri/dijit/Legend",
-      "dojo/_base/array", "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/geometry/webMercatorUtils","dojo/on","esri/tasks/query", "esri/tasks/QueryTask", "dojo/dom",
-      "dojo/parser", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane","dijit/layout/AccordionContainer",
-	  "dojo/domReady!"], function(Map, Scalebar, LocateButton,
+      require(["esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search",
+	  "esri/layers/ArcGISDynamicMapServiceLayer","esri/layers/FeatureLayer","esri/InfoTemplate",
+	  "esri/dijit/Legend","dojo/_base/array","esri/dijit/BasemapGallery","esri/arcgis/utils",
+	  "esri/geometry/webMercatorUtils","dojo/on","esri/tasks/query","esri/tasks/QueryTask", "dojo/dom","dojo/parser",
+	  "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane","dijit/layout/AccordionContainer",
+	  "dojo/domReady!"],
+	  function(Map, Scalebar, LocateButton,
 	  Search, ArcGISDynamicMapServiceLayer, FeatureLayer, InfoTemplate, Legend,
 	  arrayUtils, BasemapGallery, arcgisUtils,webMercatorUtils, on, Query, QueryTask, dom, parser) {
 		//The parser function allows the dojo to be configured within the html node
@@ -70,6 +73,7 @@
 		
 		//This is the query task and query object
 		var queryTask = new QueryTask("http://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1");
+		var queryTask2 = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8");
 
         var query = new Query();
         query.returnGeometry = true;
@@ -95,23 +99,15 @@
           }
           dom.byId("queryinfo").innerHTML = resultItems.join("");
         }
+		//This is the query to get count results from the query
+		on(dom.byId("execute2"), "click", execute2);
 		
-		/*var sqlExpression = "TOTPOP_CY / (ALAND * 0.0000003861)";
-		// Object used to request the number of  
-		// block groups within one mile of the mouse click.
-		var countStatDef = new StatisticDefinition();
-		countStatDef.statisticType = "count";
-		countStatDef.onStatisticField = sqlExpression;
-		countStatDef.outStatisticFieldName = "numBlockGroups";
-		
-		 // Set the base parameters for the query. All statistic definition objects
-		// are passed as an array into the outStatistics param
-		var queryParams = new Query();
-		queryParams.distance = 1;  // Return all block groups within one mile of the point
-		queryParams.units = "miles";
-		queryParams.outFields = fields;
-		queryParams.outStatistics = [ countStatDef];*/
-		
+		  function execute2 () {
+			//if you use query.text that looks for display field the query where you can write the query. Notice single quotes for the string fields
+          query.where = dom.byId("fcfield").value + " " + dom.byId("operator").value + " '" + dom.byId("facilityid2").value + "'";
+          queryTask2.executeForCount(query, function(count){dom.byId("CityCount").innerHTML = count});
+        }
+	
 		//add the legend
 		map.on("layers-add-result", function (evt) {
         var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
