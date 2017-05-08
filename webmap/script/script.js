@@ -64,7 +64,7 @@
             infoTemplate: template,
             outFields: ["*"]
 		});
-		var cityLayer = new FeatureLayer("http://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1",{
+		var cityLayer = new FeatureLayer("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1",{
 			mode: FeatureLayer.MODE_SNAPSHOT,
             infoTemplate: template,
             outFields: ["*"]
@@ -72,7 +72,7 @@
 		map.addLayers([featureLayer,cityLayer, dynamicMapServiceLayer]);
 		
 		//This is the query task and query object
-		var queryTask = new QueryTask("http://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1");
+		var queryTask = new QueryTask("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1");
 		var queryTask2 = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8");
 
         var query = new Query();
