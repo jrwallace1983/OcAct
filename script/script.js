@@ -1,4 +1,4 @@
-var x = 1;
+/*var x = 1;
 var y = 1;
 console.log(y);
 if (y == undefined){
@@ -131,7 +131,7 @@ do{
 	var name = prompt("tell me something sexy", "...");
 }
 while (!name);
-console.log(name);*/
+console.log(name);
 for(var num = 0; num < 12; num = num + 2){
 	document.write(num);
 }
@@ -249,4 +249,131 @@ var goleta = {
   }
  ]
 }
-console.log(goleta.currentVersion)
+console.log(goleta.currentVersion)*/
+a='#'
+
+for (var i = 0; i <= 7; i++){
+	console.log(a)
+	a = a + '#'
+}
+for (var i = 0; i<= 100; i++){
+	if ( i%3 == 0 && i%5 == 0){
+		console.log("BuzzFuzz")
+	}
+	else if (i%5 == 0){
+		console.log("fuzz")
+	}
+	else if(i%3==0){
+		console.log("Buzz")
+	}
+	else{
+		console.log(i)
+	}
+}
+b = '# # # #'
+for (var i = 0; i<=8; i++){
+	if (i%2!=0){
+		console.log(b)
+	}
+	else if(i%2 ==0){
+		console.log(" " + b)
+	}
+}
+
+function min(x, z){
+	if(x > z){
+		console.log(z)
+	}
+	else{
+		console.log(x)
+	}
+}
+console.log(Math.min(2, 100))
+min(50, 39)
+function max(x, z){
+	if(x > z){
+		console.log(x)
+	}
+	else{
+		console.log(z)
+	}
+}
+max(100, 345)
+var a = "This is a test"
+function CountB(a, c){
+	var b = 0
+	for (var i = 0; i < a.length; i++){
+		if(a.charAt(i) == c){
+			b = b + 1
+		}
+}
+return b
+}
+console.log(CountB(a, "s"))
+console.log(a.charAt(2))
+function mysum(y, z, x){
+	var myarray = []
+	var total = 0;
+	for (var i = y; i<= z; i = i + x ){
+		myarray.push(i)
+		total = total + i
+}
+	return total
+}
+console.log(mysum(3, 100, 2))
+var myjournal = {};
+myjournal[event] = "shower"
+console.log(myjournal[event])
+myjournal[event] = ["shower", "breakfast", "work", "lunch", "computer"]
+console.log(myjournal[event])
+delete myjournal[event]
+console.log(myjournal[event])
+var myself = {}
+myself["age"] = 34
+myself["sex"] = "M"
+myself["weight"] = 178
+myself["height"] = 70
+myself["haircolor"] = "Black"
+
+console.log(myself.age)
+myself.age = 55
+function aging(){
+	if (myself.age > 40){
+		myself.haircolor = "White"
+		return myself.haircolor
+	}
+}
+console.log(aging())
+
+var myarray2 = ["A", "B", "C", "D"]
+
+
+function newfunc(){
+	var myarray3 =[]
+	for(var i = myarray2.length -1; i>= 0; i--){
+		myarray3.push(myarray2[i])
+	}
+	console.log(myarray3)
+}
+newfunc()
+var t = 1
+console.log(t == 1)
+var array = [1, 2, 3]
+for (var i = 0; i < array.length; i++){
+	var current = array[i];
+	console.log(current);
+}
+
+//This uses the forEach Method must have a function that handles the value and index of the array.!!!!!!
+var arry = [1, 2, 3, 4]
+function arryfunc(value, index){
+	console.log("value:" + value + "index:" + index);
+}
+arry.forEach(arryfunc)
+
+//This is the filter method. The filter() method creates a new array with all elements that pass the test implemented by the provided function.
+function filtermeth(value){
+	if(value.length > 5){ return value}
+}
+var filtlist = ["word", "thisisalong", "short", "thisisisgoingtobelerealylong"]
+console.log(filtlist.filter(filtermeth))

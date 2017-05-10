@@ -1,9 +1,12 @@
       var map;
 
-      require(["esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search","esri/layers/ArcGISDynamicMapServiceLayer","esri/layers/FeatureLayer","esri/InfoTemplate","esri/dijit/Legend",
-      "dojo/_base/array", "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/geometry/webMercatorUtils","dojo/on","esri/tasks/query", "esri/tasks/QueryTask", "dojo/dom",
-      "dojo/parser", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane","dijit/layout/AccordionContainer",
-	  "dojo/domReady!"], function(Map, Scalebar, LocateButton,
+      require(["esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search",
+	  "esri/layers/ArcGISDynamicMapServiceLayer","esri/layers/FeatureLayer","esri/InfoTemplate",
+	  "esri/dijit/Legend","dojo/_base/array","esri/dijit/BasemapGallery","esri/arcgis/utils",
+	  "esri/geometry/webMercatorUtils","dojo/on","esri/tasks/query","esri/tasks/QueryTask", "dojo/dom","dojo/parser",
+	  "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane","dijit/layout/AccordionContainer",
+	  "dojo/domReady!"],
+	  function(Map, Scalebar, LocateButton,
 	  Search, ArcGISDynamicMapServiceLayer, FeatureLayer, InfoTemplate, Legend,
 	  arrayUtils, BasemapGallery, arcgisUtils,webMercatorUtils, on, Query, QueryTask, dom, parser) {
 		//The parser function allows the dojo to be configured within the html node
@@ -61,7 +64,7 @@
             infoTemplate: template,
             outFields: ["*"]
 		});
-		var cityLayer = new FeatureLayer("http://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1",{
+		var cityLayer = new FeatureLayer("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1",{
 			mode: FeatureLayer.MODE_SNAPSHOT,
             infoTemplate: template,
             outFields: ["*"]
@@ -69,7 +72,8 @@
 		map.addLayers([featureLayer,cityLayer, dynamicMapServiceLayer]);
 		
 		//This is the query task and query object
-		var queryTask = new QueryTask("http://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1");
+		var queryTask = new QueryTask("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1");
+		var queryTask2 = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8");
 
         var query = new Query();
         query.returnGeometry = true;
@@ -95,7 +99,15 @@
           }
           dom.byId("queryinfo").innerHTML = resultItems.join("");
         }
+		//This is the query to get count results from the query
+		on(dom.byId("execute2"), "click", execute2);
 		
+		  function execute2 () {
+			//if you use query.text that looks for display field the query where you can write the query. Notice single quotes for the string fields
+          query.where = dom.byId("fcfield").value + " " + dom.byId("operator").value + " '" + dom.byId("facilityid2").value + "'";
+          queryTask2.executeForCount(query, function(count){dom.byId("CityCount").innerHTML = count});
+        }
+	
 		//add the legend
 		map.on("layers-add-result", function (evt) {
         var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
