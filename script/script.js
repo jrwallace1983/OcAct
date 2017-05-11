@@ -377,3 +377,80 @@ function filtermeth(value){
 }
 var filtlist = ["word", "thisisalong", "short", "thisisisgoingtobelerealylong"]
 console.log(filtlist.filter(filtermeth))
+var myArray = ["a", 1, 4, [5, 43, 6]]
+myArray.pop()
+console.log(myArray)
+myArray.push(arry[2])
+console.log(myArray)
+document.write(myself.age)
+myself.haircolor = "Yellow"
+myself.AgeMe = aging()
+myself.AgeMe
+document.write(myself.haircolor)
+function young(){
+	if(myself.age > 35){
+	myself.haircolor = "Black"
+	}
+}
+myself.young = young()
+myself.young
+document.write(myself.haircolor)
+myself.bike = function(){
+	console.log("James Rode is bike today")
+}
+
+//Shift is used to remove a value at the beginning of the array pop is to remove value at end.
+myArray.shift()
+console.log(myArray)
+myArray.unshift("a")
+console.log(myArray)
+myself.bike()
+
+//Messing with objects Create a person object.  This is one way to constructing a object through a constructor function.
+
+function person (age, height, weight, hobby, haircolor, job, dad, mom,){
+	this.age = age
+	this.height = height
+	this.weight = weight
+	this.hobby = hobby
+	this.havefun = function(){
+		console.log("My " + this.hobby + " is great")
+	}
+	this.haircolor = haircolor
+	this.job = job
+	this.dad = dad
+	this.mom = mom
+}
+
+var james = new person()
+james.age = 34
+james.height = 70
+james.weight = 178
+james.hobby = "biking"
+james.haircolor = "Black"
+james.job = "Gis Specialist"
+james.dad = "Jim"
+james.mom = "Rose"
+james.havefun()
+function speak(line) {
+  console.log("The " + this.type + " rabbit says '" +
+              line + "'");
+}
+var whiteRabbit = {type: "white", speak: speak};
+var fatRabbit = {type: "fat", speak: speak};
+
+whiteRabbit.speak("Oh my ears and whiskers, " +
+                  "how late it's getting!");
+// → The white rabbit says 'Oh my ears and whiskers, how
+//   late it's getting!'
+fatRabbit.speak("I could sure use a carrot right now.");
+// → The fat rabbit says 'I could sure use a carrot
+//   right now.'
+speak.apply(fatRabbit, ["Burp!"]);
+// → The fat rabbit says 'Burp!'
+speak.call({type: "old"}, "Oh my.");
+// → The old rabbit says 'Oh my.'
+speak.apply(fatRabbit, ["Burp!"]);
+// → The fat rabbit says 'Burp!'
+speak.call({type: "old"}, "Oh my.");
+// → The old rabbit says 'Oh my.'
