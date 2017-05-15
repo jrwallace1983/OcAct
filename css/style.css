@@ -12,6 +12,10 @@ body{font:15px/1.5 Arial, Helvetica, sans-serif;
   margin:auto;
   overflow:hidden;
 }
+.container-about{
+  width:80%;
+  position:relative;
+}
 hr{background-color:#FE9F29; height:10px;border-width:0; margin:0;
 }
 #containerheadermain{background:linear-gradient(90deg, #233172, #070E20);
@@ -77,5 +81,19 @@ nav{background:linear-gradient(180deg,#EAE2D7,#5F5F5F); position:absolute; botto
 }
 .boxes:hover{background-color:#B57F4D;}
 .boxes img{width:110px; margin-top:50%;}
+.aside-about{
+	height:100%;
+	width:2%;
+	background-color:#6B7C8C;
+	position:absolute;
+	left:0px;
+	top:0px
+}
+.about-text{margin:3%;}
+.about-ul{float:left;
+}
+.about-ul li{list-style-type:square;}
+.about-h5{line-height:0}
+.about-color-blue{color:#6B7C8C}
 footer .container{background-color:#212F6D;padding:15px 0 15px 0;}
 footer .container div h6{color:white; padding:0px 0px 0px 2%; margin:0px}
