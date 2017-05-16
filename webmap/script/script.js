@@ -51,12 +51,14 @@
       });
 		basemapGallery.startup();
 	  
+
+		// This is the InfoTemplate popup object
+		var template = new InfoTemplate("Attributes", "${*}");
+
 		//This is the dynamic Map Service layer objects
 		var dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(
 		"https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer", {
 		});
-		// This is the InfoTemplate popup object
-		var template = new InfoTemplate("Attributes", "${*}");
 	    
 		//This is the feature layer object
 		var featureLayer = new FeatureLayer("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8",{
@@ -64,16 +66,16 @@
             infoTemplate: template,
             outFields: ["*"]
 		});
-		var cityLayer = new FeatureLayer("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1",{
+		var sysvalvelayer = new FeatureLayer("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer/15",{
 			mode: FeatureLayer.MODE_SNAPSHOT,
             infoTemplate: template,
             outFields: ["*"]
 		});
-		map.addLayers([featureLayer,cityLayer, dynamicMapServiceLayer]);
+		map.addLayers([featureLayer,sysvalvelayer, dynamicMapServiceLayer]);
 		
 		//This is the query task and query object
-		var queryTask = new QueryTask("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1");
-		var queryTask2 = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8");
+		var queryTask = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8");
+		var valvequeryTask = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/15");
 
         var query = new Query();
         query.returnGeometry = true;
@@ -83,8 +85,8 @@
 
         function execute () {
 			//if you use query.text that looks for display field the query where you can write the query. Notice single quotes for the string fields
-          query.where = "CITY_NAME = " + "'" + dom.byId("facilityid").value + "'";
-          queryTask.execute(query, showResults);
+          query.where = "valvetype = " + "'" + dom.byId("facilityid").value + "'";
+          valvequeryTask.execute(query, showResults);
         }
 
         function showResults (results) {
@@ -105,7 +107,7 @@
 		  function execute2 () {
 			//if you use query.text that looks for display field the query where you can write the query. Notice single quotes for the string fields
           query.where = dom.byId("fcfield").value + " " + dom.byId("operator").value + " '" + dom.byId("facilityid2").value + "'";
-          queryTask2.executeForCount(query, function(count){dom.byId("CityCount").innerHTML = count});
+          queryTask.executeForCount(query, function(count){dom.byId("CityCount").innerHTML = count});
         }
 	
 		//add the legend
