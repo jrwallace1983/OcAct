@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>JW Map Template</title>
+	<link rel="icon" href="./image/globe.png">
+	<link rel="stylesheet" href="https://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+	<link rel="stylesheet" href="./css/stylesheet.css">
+    <style>
+    </style>
+    <script src="https://js.arcgis.com/3.20/"></script>
+    <script src="./script/scriptSelectQuery.js">
+    </script>
+  </head>
+<body>
+  <br/>
+  US city population greater than : <input type="text" id="population" value="500000" />
+  <input type="button" value="Get Details" id="runQuery" />
+  <div id="mapDiv" style="width:600px; height:600px; border:1px solid #000;"></div>
+  Click on a city once it's highlighted to get an InfoWindow.
+</body>
+</html>
