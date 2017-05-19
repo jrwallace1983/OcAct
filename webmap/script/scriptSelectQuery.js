@@ -7,39 +7,42 @@ require([
   "esri/symbols/SimpleMarkerSymbol",
   "esri/InfoTemplate",
   "dojo/_base/Color",
+  "esri/SpatialReference",
   "dojo/dom",
   "dojo/on",
   "dojo/domReady!"
-], function(Map, ArcGISDynamicMapServiceLayer, QueryTask, Query, SimpleMarkerSymbol, InfoTemplate, Color, dom, on) {
+], function(Map, ArcGISDynamicMapServiceLayer, QueryTask, Query, SimpleMarkerSymbol, InfoTemplate, Color, SpatialReference, dom, on) {
   //create map and add layer
-  map = new Map("mapDiv");
+  map = new Map("mapDiv", {basemap:"streets",});
+  sr = new SpatialReference(102100)
   var layer = new ArcGISDynamicMapServiceLayer(
-    "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer");
+    "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer");
   map.addLayer(layer);
 
   //initialize query task
-  queryTask = new QueryTask("http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/0");
+  queryTask = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer/15");
 
   //initialize query
   query = new Query();
   query.returnGeometry = true;
-  query.outFields = ["CITY_NAME", "STATE_NAME", "POP1990"];
+  query.outFields = ["*"];
+  query.outSpatialReference = sr;
 
   //initialize InfoTemplate
-  infoTemplate = new InfoTemplate("${CITY_NAME}", "Name : ${CITY_NAME}<br/> State : ${STATE_NAME}<br />Population : ${POP1990}");
+  infoTemplate = new InfoTemplate("Attributes","${*}");
 
   //create symbol for selected features
   symbol = new SimpleMarkerSymbol();
-  symbol.setStyle(SimpleMarkerSymbol.STYLE_SQUARE);
-  symbol.setSize(10);
-  symbol.setColor(new Color([255,255,0,0.5]));
+  symbol.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
+  symbol.setSize(20);
+  symbol.setColor(new Color([200,255,0,0.5]));
 
   //write "Get Details" button's click event 
   on(dom.byId("runQuery"), "click", executeQueryTask);
   
   function executeQueryTask() {
   //set query based on what user typed in for population;
-  query.where = "POP1990 > " + dom.byId("population").value;
+  query.where = "valvetype = " + dom.byId("population").value;
  
   //execute query
   queryTask.execute(query,showResults);
