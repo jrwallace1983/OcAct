@@ -408,7 +408,7 @@ myself.bike()
 
 //Messing with objects Create a person object.  This is one way to constructing a object through a constructor function.
 
-function person (age, height, weight, hobby, haircolor, job, dad, mom,){
+function person (age, height, weight, hobby, haircolor, job, dad, mom,siblings, ancestors){
 	this.age = age
 	this.height = height
 	this.weight = weight
@@ -420,6 +420,8 @@ function person (age, height, weight, hobby, haircolor, job, dad, mom,){
 	this.job = job
 	this.dad = dad
 	this.mom = mom
+	this.siblings = siblings
+	this.ancestors = ancestors
 }
 
 var james = new person()
@@ -454,3 +456,26 @@ speak.apply(fatRabbit, ["Burp!"]);
 // → The fat rabbit says 'Burp!'
 speak.call({type: "old"}, "Oh my.");
 // → The old rabbit says 'Oh my.'
+james.siblings = ["Candy", "Nancy"]
+console.log(james.siblings[0])
+for(var i = 0; i< james.siblings.length; i++){
+	console.log(james.siblings[i])
+}
+james.ancestors = [{side_of_family:"paternal", relationship:"Grandpa", name: "Jim", dob: 1933}, {side_of_family:"paternal", relationship:"Grandma", name: "Marjorie", dob:1930}, {side_of_family:"maternal", relationship:"Grandpa", name: "Rafael", dob: 1916}, {side_of_family:"maternal", relationship:"Grandma", name: "Elda", dob: 1918}]
+var ancestry = james.ancestors
+console.log(ancestry.length)
+console.log(ancestry)
+for (var i = 0; i<ancestry.length; i++){
+	console.log(ancestry[i])
+}
+console.log(ancestry[3].name)
+for(var i = 0; i<ancestry.length; i++){
+	console.log(ancestry[i].name)
+	if(ancestry[i].name == "Jim"){
+	ancestry[i].death = 2011
+	ancestry[i].age = ancestry[i].death - ancestry[i].dob
+	console.log(ancestry[i].dob)
+	console.log("Age of Death " + ancestry[i].age)
+	console.log(ancestry[i].relationship)
+}
+}

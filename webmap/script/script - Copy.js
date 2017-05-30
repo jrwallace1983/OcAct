@@ -1,14 +1,31 @@
       var map;
 
-      require(["esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search",
-	  "esri/layers/ArcGISDynamicMapServiceLayer","esri/layers/FeatureLayer","esri/InfoTemplate",
-	  "esri/dijit/Legend","dojo/_base/array","esri/dijit/BasemapGallery","esri/arcgis/utils",
-	  "esri/geometry/webMercatorUtils","dojo/on","esri/tasks/query","esri/tasks/QueryTask", "dojo/dom","dojo/parser",
-	  "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane","dijit/layout/AccordionContainer",
+      require(["esri/map",
+	  "esri/dijit/Scalebar",
+	  "esri/dijit/LocateButton",
+	  "esri/dijit/Search",
+	  "esri/layers/ArcGISDynamicMapServiceLayer",
+	  "esri/layers/FeatureLayer",
+	  "esri/InfoTemplate",
+	  "esri/dijit/Legend",
+	  "dojo/_base/array",
+	  "esri/dijit/BasemapGallery",
+	  "esri/arcgis/utils",
+	  "esri/geometry/webMercatorUtils",
+	  "dojo/on","esri/tasks/query",
+	  "esri/tasks/QueryTask",
+	  "esri/symbols/SimpleMarkerSymbol",
+	  "dojo/_base/Color",
+	  "esri/SpatialReference",
+	  "dojo/dom","dojo/parser",
+	  "dijit/layout/BorderContainer",
+	  "dijit/layout/ContentPane",
+	  "dijit/TitlePane",
+	  "dijit/layout/AccordionContainer",
 	  "dojo/domReady!"],
 	  function(Map, Scalebar, LocateButton,
 	  Search, ArcGISDynamicMapServiceLayer, FeatureLayer, InfoTemplate, Legend,
-	  arrayUtils, BasemapGallery, arcgisUtils,webMercatorUtils, on, Query, QueryTask, dom, parser) {
+	  arrayUtils, BasemapGallery, arcgisUtils,webMercatorUtils, on, Query, QueryTask, SimpleMarkerSymbol, Color, SpatialReference, dom, parser) {
 		//The parser function allows the dojo to be configured within the html node
 		parser.parse();
 		
@@ -18,6 +35,9 @@
           center: [-88.158, 41.757], // longitude, latitude
           zoom: 13,
         });
+		
+		var sr = new SpatialReference(102100);
+
 		
 		  //This is the scalebar object
 		  var scalebar = new Scalebar({
@@ -51,12 +71,26 @@
       });
 		basemapGallery.startup();
 	  
+
+		// This is the InfoTemplate popup object
+		var template = new InfoTemplate("Attributes", "${*}");
+
+		  //create symbol for selected features
+		symbol = new SimpleMarkerSymbol();
+		symbol.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
+		symbol.setSize(25);
+		symbol.setColor(new Color([200,255,0,0.5]));
+		
+		symbol2 = new SimpleMarkerSymbol();
+		symbol2.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
+		symbol2.setSize(25);
+		symbol2.setColor(new Color([251,104,105,0.5]));
+
+
 		//This is the dynamic Map Service layer objects
 		var dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(
 		"https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer", {
 		});
-		// This is the InfoTemplate popup object
-		var template = new InfoTemplate("Attributes", "${*}");
 	    
 		//This is the feature layer object
 		var featureLayer = new FeatureLayer("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8",{
@@ -64,32 +98,76 @@
             infoTemplate: template,
             outFields: ["*"]
 		});
-		var cityLayer = new FeatureLayer("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1",{
+		var sysvalvelayer = new FeatureLayer("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/15",{
 			mode: FeatureLayer.MODE_SNAPSHOT,
             infoTemplate: template,
             outFields: ["*"]
 		});
-		map.addLayers([featureLayer,cityLayer, dynamicMapServiceLayer]);
+		map.addLayers([featureLayer,sysvalvelayer, dynamicMapServiceLayer]);
 		
 		//This is the query task and query object
-		var queryTask = new QueryTask("https://dpw.gis.lacounty.gov/dpw/rest/services/CityBoundaries/MapServer/1");
-		var queryTask2 = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8");
+		var queryTask = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/8");
+		var valvequeryTask = new QueryTask("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/FeatureServer/15");
 
         var query = new Query();
         query.returnGeometry = true;
         query.outFields = ["*"];
-		        
-		on(dom.byId("execute"), "click", execute);
+		query.outSpatialReference = sr;
+		 
+		var asset = ""
+		if (on(dom.byId("execute-query-valve"), "click", execute)){asset = "valve"}
 
         function execute () {
 			//if you use query.text that looks for display field the query where you can write the query. Notice single quotes for the string fields
-          query.where = "CITY_NAME = " + "'" + dom.byId("facilityid").value + "'";
-          queryTask.execute(query, showResults);
+          query.where = dom.byId("field-" + asset).value + " " + dom.byId("operator-" + asset).value + " '" + dom.byId("value-valve").value + "'";
+          valvequeryTask.executeForCount(query, function(count){dom.byId("count-valve").innerHTML = count});
+          //query.where = "valvetype = " + "'" + dom.byId("facilityid").value + "'";
+          valvequeryTask.execute(query, showResults);
         }
 
         function showResults (results) {
+			map.graphics.clear();
+			console.log(results)
           var resultItems = [];
           var resultCount = results.features.length;
+		  var resultFeatures = results.features;
+		  for (var i=0; i<resultCount; i++){
+			  var graphic = resultFeatures[i];
+			  graphic.setSymbol(symbol);
+			  //graphic.setInfoTemplate(template);
+			  map.graphics.add(graphic);
+		  }
+          for (var i = 0; i < resultCount; i++) {
+            var featureAttributes = results.features[i].attributes;
+            for (var attr in featureAttributes) {
+				if(attr == "facilityid"|| attr == "diameter"|| attr == "valvetype"|| attr == "lasteditor"){
+				resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>")};
+            }
+            resultItems.push("<br>");
+          }
+          dom.byId("queryinfo-valve").innerHTML = resultItems.join("");
+        }
+		//This is the query to get count results from the query
+		on(dom.byId("execute-query-hydrant"), "click", execute2);
+		
+		  function execute2 () {
+			//if you use query.text that looks for display field the query where you can write the query. Notice single quotes for the string fields
+          query.where = dom.byId("field-hydrant").value + " " + dom.byId("operator-hydrant").value + " '" + dom.byId("value-hydrant").value + "'";
+          queryTask.executeForCount(query, function(count){dom.byId("count-hydrant").innerHTML = count});
+		  queryTask.execute(query, showResults2);
+        }
+
+        function showResults2 (results) {
+			map.graphics.clear();
+          var resultItems = [];
+          var resultCount = results.features.length;
+		  var resultFeatures = results.features;
+		  for (var i=0; i<resultCount; i++){
+			  var graphic = resultFeatures[i];
+			  graphic.setSymbol(symbol2);
+			  //graphic.setInfoTemplate(template);
+			  map.graphics.add(graphic);
+		  }
           for (var i = 0; i < resultCount; i++) {
             var featureAttributes = results.features[i].attributes;
             for (var attr in featureAttributes) {
@@ -97,15 +175,7 @@
             }
             resultItems.push("<br>");
           }
-          dom.byId("queryinfo").innerHTML = resultItems.join("");
-        }
-		//This is the query to get count results from the query
-		on(dom.byId("execute2"), "click", execute2);
-		
-		  function execute2 () {
-			//if you use query.text that looks for display field the query where you can write the query. Notice single quotes for the string fields
-          query.where = dom.byId("fcfield").value + " " + dom.byId("operator").value + " '" + dom.byId("facilityid2").value + "'";
-          queryTask2.executeForCount(query, function(count){dom.byId("CityCount").innerHTML = count});
+          dom.byId("queryinfo-hydrant").innerHTML = resultItems.join("");
         }
 	
 		//add the legend
