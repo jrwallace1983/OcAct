@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>esri API</title>
+	<link rel="icon" href="./image/globe.png">
+	<link rel="stylesheet" href="https://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+    <style>
+      html, body, #map {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+		
+      }
+	  #LocateButton{
+		position: absolute;
+		top:95px;
+		left:20px;
+		z-index:50;
+	}
+	#search {
+         display: block;
+         position: absolute;
+         z-index: 2;
+         top: 20px;
+         right: 74px;
+	}
+	#rightPane {
+      width: 20%;
+    }
+
+    #legendPane {
+      border: solid #97DCF2 1px;
+    }
+	.esriSimpleSliderDecrementButton{background-color:green;
+		padding:.5%;
+	}
+	.esriScalebarLine{
+		background-color:white;
+	}
+
+    </style>
+    <script src="https://js.arcgis.com/3.20/"></script>
+    <script>
+      var map;
+
+      require(["esri/map","esri/dijit/Scalebar","esri/dijit/LocateButton","esri/dijit/Search","esri/layers/FeatureLayer","esri/dijit/Legend",
+      "dojo/_base/array", "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/geometry/webMercatorUtils", "dojo/dom",
+      "dojo/parser", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane","dijit/layout/AccordionContainer",
+	  "dojo/domReady!"], function(Map, Scalebar, LocateButton,
+	  Search, FeatureLayer, Legend, arrayUtils, BasemapGallery, arcgisUtils,webMercatorUtils, dom, parser) {
+		parser.parse();
+        var map = new Map("map", {
+          basemap: "streets",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+          center: [-117.87, 33.782], // longitude, latitude
+          zoom: 13,
+		  logo: false
+        });
+		
+		  var scalebar = new Scalebar({
+          map: map,
+          // "dual" displays both miles and kilometers
+          // "english" is the default, which displays miles
+          // use "metric" for kilometers
+          scalebarUnit: "english"
+        });
+		
+		var geoLocate = new LocateButton({
+		map: map
+		}, "LocateButton");
+		
+		var search = new Search({
+        map: map
+        }, "search");
+		
+		var basemapGallery = new BasemapGallery({
+        showArcGISBasemaps: true,
+        map: map
+      }, "basemapGallery");
+
+		      
+		basemapGallery.on("error", function(msg) {
+        console.log("basemap gallery error:  ", msg);
+      });
+	  
+		var featureLayer = new FeatureLayer("https://egis3.lacounty.gov/arcgis/rest/services/PARKS/TrailLines/MapServer/1");
+		
+		//add the legend
+		map.on("layers-add-result", function (evt) {
+        var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
+          return {layer:layer.layer, title:layer.layer.name};
+        });
+        if (layerInfo.length > 0) {
+          var legendDijit = new Legend({
+            map: map,
+            layerInfos: layerInfo
+          }, "legendDiv");
+          legendDijit.startup();
+		}
+		});
+		  map.on("load", function() {
+          //after map loads, connect to listen to mouse move & drag events
+          map.on("mouse-move", showCoordinates);
+          map.on("mouse-drag", showCoordinates);
+        });
+
+        function showCoordinates(evt) {
+          //the map is in web mercator but display coordinates in geographic (lat, long)
+          var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
+          //display mouse coordinates
+          dom.byId("info").innerHTML = mp.x.toFixed(3) + ", " + mp.y.toFixed(3);
+        }
+		geoLocate.startup();
+        search.startup();
+		basemapGallery.startup();
+		map.addLayers([featureLayer]);
+      });
+	  
+    </script>
+  </head>
+
+  <body class="claro"> 
+	<div id =content"
+	data-dojo-type="dijit/layout/BorderContainer"
+	data-dojo-props="design: 'headline', gutters:true"
+	style="width:100%; height:100%; margin:0;">
+	<div id="rightPane"
+       data-dojo-type="dijit/layout/ContentPane"
+       data-dojo-props="region:'right'">
+
+    <div data-dojo-type="dijit/layout/AccordionContainer">
+      <div data-dojo-type="dijit/layout/ContentPane" id="legendPane"
+           data-dojo-props="title:'Legend', selected:true">
+        <div id="legendDiv"></div>
+      </div>
+      <div data-dojo-type="dijit/layout/ContentPane"
+           data-dojo-props="title:'Pane 2'" >
+        <!--This pane could contain tools or additional content-->
+      </div>
+    </div>
+  </div>
+    <div id="map" class="map" data-dojo-type="dijit/layout/ContentPane" 
+         data-dojo-props="region:'center'">
+		 <span id="info" style="position:absolute; left:200px; bottom:5px; color:#000; z-index:50;"></span>
+		<div style="position:absolute; left:0px; top:; background-color:blue; height:100%; width:10%; z-index:10;"> 
+		<div id="LocateButton">
+		</div>
+		</div>
+		<div id="search"></div>
+		<div style="position:absolute; right:20px; top:10px; z-Index:999;">
+        <div data-dojo-type="dijit/TitlePane" 
+             data-dojo-props="title:'Switch Basemap', closable:false, open:false">
+          <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
+            <div id="basemapGallery"></div>
+          </div>
+        </div>
+      </div>
+	</div>
+	</div>
+	<footer style="position:relative;">
+	Authored by James Wallace
+	</footer>
+  </body>
+</html>

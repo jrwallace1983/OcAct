@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>  
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+  <title>Basemap gallery</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/3.20/dijit/themes/soria/soria.css">    
+  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+  <style> 
+    html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+    #map{
+      padding:0;
+    }
+	.esriBasemapGallery {background-color:#708CB6;}
+.esriBasemapGalleryNode {
+    float: left;
+    margin: 10px 20px 10px 20px;
+    width: 100px;
+    margin: 5px 10px 0 10px;
+}
+.esriBasemapGalleryLabelContainer {
+    background-color: transparent;
+    text-align: center;
+    width: 100%;
+    height: 2.5em;
+    overflow: hidden;
+    display: block;
+}
+.esriBasemapGalleryThumbnail {
+    height: 67px;
+    width: 100px;
+    border: 1px solid #fff;
+    margin: 1px;
+    -moz-box-shadow: 0px 0px 7px #000;
+    -webkit-box-shadow: 0px 0px 7px #000;
+    box-shadow: 0px 0px 7px #000;
+}
+.esriBasemapGallerySelectedNode .esriBasemapGalleryThumbnail {
+    border: 2px solid #F99;
+    margin: 0;
+}
+.esriBasemapGalleryMessage {}
+  </style> 
+  
+  <script src="https://js.arcgis.com/3.20/"></script>
+  <script> 
+    var map;
+    require([
+      "esri/map", "esri/dijit/BasemapGallery", "esri/arcgis/utils",
+      "dojo/parser",
+
+      "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane",
+      "dojo/domReady!"
+    ], function(
+      Map, BasemapGallery, arcgisUtils,
+      parser
+    ) {
+      parser.parse();
+
+      map = new Map("map", {
+        basemap: "topo",
+        center: [-105.255, 40.022],
+        zoom: 13
+      });
+
+      //add the basemap gallery, in this case we'll display maps from ArcGIS.com including bing maps
+      var basemapGallery = new BasemapGallery({
+        showArcGISBasemaps: true,
+        map: map
+      }, "basemapGallery");
+      basemapGallery.startup();
+      
+      basemapGallery.on("error", function(msg) {
+        console.log("basemap gallery error:  ", msg);
+      });
+    });
+  </script> 
+</head> 
+
+<body class="soria">
+	<div style="position:relative; height:100%; width:90%; margin:auto; overflow:hidden;" >
+	<div style="position:relative; height:60%; width:60%; margin:0; overflow:hidden;">
+  <div data-dojo-type="dijit/layout/BorderContainer" 
+       data-dojo-props="design:'headline', gutters:true" 
+       style="width:100%;height:100%;margin:0;">
+
+    <div id="map" 
+         data-dojo-type="dijit/layout/ContentPane" 
+         data-dojo-props="region:'center'" 
+         style="padding:0;">
+
+      <div style="position:absolute; right:20px; top:10px; z-Index:999;">
+        <div data-dojo-type="dijit/TitlePane" 
+             data-dojo-props="title:'Switch Basemap', closable:false, open:false">
+          <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;" >
+		  <div style="background-color:#9ABCEE"> <b>This is a gallery</b></div>
+            <div id="basemapGallery"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</body> 
+
+</html>
+
